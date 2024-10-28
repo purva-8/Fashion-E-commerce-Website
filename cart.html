@@ -1,0 +1,155 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="navbar-container">
+            <input type="checkbox" name="" id="checkbox">
+            <div class="hamburger-lines">
+                <span class="line line1"></span>
+                <span class="line line2"></span>
+                <span class="line line3"></span>
+            </div>
+            <ul class="menu-items">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="index.html#sellers">Shop</a></li>
+                <li><a href="index.html#news">Blog</a></li>
+                <li><a href="index.html#contact">Contact</a></li>
+                <li><a href="cart.html">Cart</a></li>
+            </ul>
+            <div class="logo">
+                <img src="https://i.postimg.cc/TP6JjSTt/logo.webp" alt="Logo">
+            </div>
+        </div>
+    </nav>
+
+    <section class="cart-section">
+        <div class="cart-container">
+            <h2>Your Shopping Cart</h2>
+            <table class="cart-table" id="cart-table">
+                <thead>
+                    <tr>
+                        <th>Product</th>
+                        <th>Price</th>
+                        <th>Quantity</th>
+                        <th>Total</th>
+                        <th>Remove</th>
+                    </tr>
+                </thead>
+                <tbody id="cart-items"></tbody>
+            </table>
+            <div class="cart-summary">
+                <h3>Total: <span id="total-price">$0.00</span></h3>
+                <button class="checkout-btn" id="checkout-btn">Proceed to Checkout</button>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="footer-container container">
+            <div class="content_1">
+                <img src="https://i.postimg.cc/htGyQ4JB/footer-logo.png" alt="logo">
+                <p>The customer is at the heart of our<br>unique business model, which includes<br>design.</p>
+                <img src="https://i.postimg.cc/Nj9dgJ98/cards.png" alt="cards">
+            </div>
+            <div class="content_2">
+                <h4>SHOPPING</h4>
+                <a href="index.html#sellers">Clothing Store</a>
+                <a href="index.html#sellers">Trending Shoes</a>
+                <a href="index.html#sellers">Accessories</a>
+                <a href="index.html#sellers">Sale</a>
+            </div>
+            <div class="content_3">
+                <h4>SHOPPING</h4>
+                <a href="./contact.html">Contact Us</a>
+                <a href="https://payment-method-sb.netlify.app/" target="_blank">Payment Method</a>
+                <a href="https://delivery-status-sb.netlify.app/" target="_blank">Delivery</a>
+                <a href="" target="_blank">Return and Exchange</a>
+            </div>
+            <div class="content_4">
+                <h4>NEWSLETTER</h4>
+                <p>Be the first to know about new<br>arrivals, look books, sales & promos!</p>
+                <div class="f-mail">
+                    <input type="email" placeholder="Your Email">
+                    <i class='bx bx-envelope'></i>
+                </div>
+                <hr>
+            </div>
+        </div>
+        <div class="f-design">
+            <div class="f-design-txt container">
+                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Quidem veritatis nostrum nihil mollitia eveniet odio. Tempora, esse? Sunt incidunt possimus, odit quod praesentium aspernatur, dolores velit alias numquam ipsa unde!</p>
+            </div>
+        </div>
+    </footer>
+    <script>
+        const cartItems = [
+            {
+                id: 1,
+                name: 'Product 1',
+                price: 20.00,
+                quantity: 1,
+                image: 'https://via.placeholder.com/100'
+            },
+            {
+                id: 2,
+                name: 'Product 2',
+                price: 15.00,
+                quantity: 1,
+                image: 'https://via.placeholder.com/100'
+            }
+        ];
+
+        function updateCart() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+
+            cartItems.forEach(item => {
+                const totalPrice = item.price * item.quantity;
+                total += totalPrice;
+
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>
+                        <img src="${item.image}" alt="${item.name}"> ${item.name}
+                    </td>
+                    <td>$${item.price.toFixed(2)}</td>
+                    <td>
+                        <input type="number" value="${item.quantity}" min="1" class="quantity-input" onchange="updateQuantity(${item.id}, this.value)">
+                    </td>
+                    <td>$${totalPrice.toFixed(2)}</td>
+                    <td><button class="remove-btn" onclick="removeItem(${item.id})"><i class="fas fa-trash"></i></button></td>
+                `;
+                cartItemsContainer.appendChild(row);
+            });
+
+            document.getElementById('total-price').innerText = `$${total.toFixed(2)}`;
+        }
+
+        function updateQuantity(id, quantity) {
+            const item = cartItems.find(item => item.id === id);
+            if (item) {
+                item.quantity = parseInt(quantity);
+                updateCart();
+            }
+        }
+
+        function removeItem(id) {
+            const index = cartItems.findIndex(item => item.id === id);
+            if (index !== -1) {
+                cartItems.splice(index, 1);
+                updateCart();
+            }
+        }
+
+        window.onload = updateCart;
+    </script>
+</body>
+</html>
